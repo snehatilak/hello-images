@@ -1,5 +1,6 @@
 package com.snehatilak.helloimages;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout errorView;
     private ImageView errorImageView;
     private TextView errorTextView;
+    private FloatingActionButton fab;
 
     private RecyclerView imagesRecView;
     private ImagesRecyclerViewAdapter adapter;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imagesRecView = findViewById(R.id.recView_images);
+        fab = findViewById(R.id.btn_fab);
         errorView = findViewById(R.id.error_view);
         errorImageView = findViewById(R.id.error_image);
         errorTextView = findViewById(R.id.error_message);
@@ -56,6 +60,17 @@ public class MainActivity extends AppCompatActivity {
         imagesRecView.setAdapter(adapter);
         imagesRecView.setLayoutManager(new LinearLayoutManager(this));
 
+        imagesRecView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    fab.hide();
+                } else {
+                    fab.show();
+                }
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 
     public void reloadImageList(View view) {
