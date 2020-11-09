@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Hello Images</string>
+
+    <string name="error">Error, please try again</string>
+    <string name="image_search">Click RELOAD to load images</string>
+    <string name="no_data">No images found</string>
+    <string name="no_network">Please check internet connection</string>
+
+</resources>
