@@ -76,48 +76,40 @@ public class MainActivity extends AppCompatActivity {
     public void reloadImageList(View view) {
         imageList.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
-        JsonArrayRequest imageRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if(response.length() <= 0){
-                    //no data
-                    errorImageView.setImageResource(R.drawable.ic_no_data);
-                    errorTextView.setText(R.string.no_data);
-                    errorView.setVisibility(View.VISIBLE);
-                    imagesRecView.setVisibility(View.GONE);
-                } else{
-                    errorView.setVisibility(View.GONE);
-                    imagesRecView.setVisibility(View.VISIBLE);
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject o = null;
+        JsonArrayRequest imageRequest = new JsonArrayRequest(Request.Method.GET, URL, null, (JSONArray response) -> {
+            if (response.length() <= 0) {
+                //no data
+                errorImageView.setImageResource(R.drawable.ic_no_data);
+                errorTextView.setText(R.string.no_data);
+                errorView.setVisibility(View.VISIBLE);
+                imagesRecView.setVisibility(View.GONE);
+            } else {
+                errorView.setVisibility(View.GONE);
+                imagesRecView.setVisibility(View.VISIBLE);
+                for (int i = 0; i < response.length(); i++) {
                         try {
-                            o = response.getJSONObject(i);
+                            JSONObject o = response.getJSONObject(i);
                             imageList.add(new Image(o.getString("caption"), o.getString("imageUrl")));
                         } catch (JSONException e) {
                             Toast.makeText(view.getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
 
-                    }
                 }
-
-                adapter.setImageList(imageList);
-
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if(error instanceof NetworkError || error instanceof NoConnectionError || error instanceof TimeoutError){
-                    errorImageView.setImageResource(R.drawable.ic_no_network);
-                    errorTextView.setText(R.string.no_network);
-                    errorView.setVisibility(View.VISIBLE);
-                    imagesRecView.setVisibility(View.GONE);
-                } else{
-                    Toast.makeText(view.getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
-                }
 
+            adapter.setImageList(imageList);
+
+        }, (VolleyError error) -> {
+            if (error instanceof NetworkError || error instanceof TimeoutError) {
+                errorImageView.setImageResource(R.drawable.ic_no_network);
+                errorTextView.setText(R.string.no_network);
+                errorView.setVisibility(View.VISIBLE);
+                imagesRecView.setVisibility(View.GONE);
+            } else {
+                Toast.makeText(view.getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
             }
+
         }
-
         );
 
         requestQueue.add(imageRequest);
