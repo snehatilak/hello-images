@@ -5,5 +5,11 @@
     <string name="no_data">No images found</string>
     <string name="no_network">Please check internet connection</string>
     <string name="title_activity_image_fullscreen">Image</string>
+    <string name="menu_grid">Show as Grid</string>
+    <string name="menu_list">Show as List</string>
+    <string name="image_caption">caption</string>
+    <string name="image_url">imageUrl</string>
+    <string name="images_fetch_url">https://mnktechnology.com/tech/mytester/web/web-service/dev-get-image-list</string>
+    <string name="error">Something went wrong!</string>
 
 </resources>

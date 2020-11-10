@@ -42,8 +42,8 @@ public class ImagesRecyclerViewAdapter extends RecyclerView.Adapter<ImagesRecycl
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ImageFullscreenActivity.class);
-                intent.putExtra("caption", imageList.get(position).getCaption());
-                intent.putExtra("imageUrl", imageList.get(position).getImageUrl());
+                intent.putExtra(v.getContext().getString(R.string.image_caption), imageList.get(position).getCaption());
+                intent.putExtra(v.getContext().getString(R.string.image_url), imageList.get(position).getImageUrl());
                 v.getContext().startActivity(intent);
             }
         });

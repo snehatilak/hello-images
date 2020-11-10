@@ -36,8 +36,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String URL = "https://mnktechnology.com/tech/mytester/web/web-service/dev-get-image-list";
-
     //will be used to show any type of error: network issues, empty data sets
     private LinearLayout errorView;
     private ImageView errorImageView;
@@ -99,12 +97,12 @@ public class MainActivity extends AppCompatActivity {
                 isGrid = false;
                 imagesRecView.setLayoutManager(linearLayoutManager);
                 item.setIcon(R.drawable.ic_menu_grid);
-                item.setTitle("Show as Grid");
+                item.setTitle(R.string.menu_grid);
             } else {
                 isGrid = true;
                 imagesRecView.setLayoutManager(staggeredGridLayoutManager);
                 item.setIcon(R.drawable.ic_menu_list);
-                item.setTitle("Show as List");
+                item.setTitle(R.string.menu_list);
             }
         }
         return super.onOptionsItemSelected(item);
@@ -113,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     public void reloadImageList(View view) {
         imageList.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
-        JsonArrayRequest imageRequest = new JsonArrayRequest(Request.Method.GET, URL, null, (JSONArray response) -> {
+        JsonArrayRequest imageRequest = new JsonArrayRequest(Request.Method.GET, getString(R.string.images_fetch_url), null, (JSONArray response) -> {
             if (response.length() <= 0) {
                 //no data
                 errorImageView.setImageResource(R.drawable.ic_no_data);
@@ -126,9 +124,9 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject o = response.getJSONObject(i);
-                            imageList.add(new Image(o.getString("caption"), o.getString("imageUrl")));
+                            imageList.add(new Image(o.getString(getString(R.string.image_caption)), o.getString(getString(R.string.image_url))));
                         } catch (JSONException e) {
-                            Toast.makeText(view.getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
                         }
 
                 }
@@ -143,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 errorView.setVisibility(View.VISIBLE);
                 imagesRecView.setVisibility(View.GONE);
             } else {
-                Toast.makeText(view.getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
             }
 
         }

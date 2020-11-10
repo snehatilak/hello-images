@@ -114,8 +114,8 @@ public class ImageFullscreenActivity extends AppCompatActivity {
             }
         });
 
-        String caption = getIntent().getStringExtra("caption");
-        String imageUrl = getIntent().getStringExtra("imageUrl");
+        String caption = getIntent().getStringExtra(getString(R.string.image_caption));
+        String imageUrl = getIntent().getStringExtra(getString(R.string.image_url));
         Glide.with(this).asBitmap().load(imageUrl).into(mContentView);
         setTitle(caption);
 
