@@ -5,5 +5,6 @@
     <string name="image_search">Click the blue button to load images</string>
     <string name="no_data">No images found</string>
     <string name="no_network">Please check internet connection</string>
+    <string name="title_activity_image_fullscreen">Image</string>
 
 </resources>

@@ -1,6 +1,8 @@
 package com.snehatilak.helloimages;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +41,10 @@ public class ImagesRecyclerViewAdapter extends RecyclerView.Adapter<ImagesRecycl
         holder.imageParentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, imageList.get(position).getCaption(), Toast.LENGTH_SHORT).show();
-                //TODO is this clickable?
+                Intent intent = new Intent(v.getContext(), ImageFullscreenActivity.class);
+                intent.putExtra("caption", imageList.get(position).getCaption());
+                intent.putExtra("imageUrl", imageList.get(position).getImageUrl());
+                v.getContext().startActivity(intent);
             }
         });
 
