@@ -2,10 +2,15 @@ package com.snehatilak.helloimages;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,23 +47,31 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView imagesRecView;
     private ImagesRecyclerViewAdapter adapter;
 
+    boolean isGrid;
+    private LinearLayoutManager linearLayoutManager;
+
     private ArrayList<Image> imageList = new ArrayList<>();
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         imagesRecView = findViewById(R.id.recView_images);
         fab = findViewById(R.id.btn_fab);
         errorView = findViewById(R.id.error_view);
         errorImageView = findViewById(R.id.error_image);
         errorTextView = findViewById(R.id.error_message);
 
+        linearLayoutManager = new LinearLayoutManager(this);
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
         adapter = new ImagesRecyclerViewAdapter(this);
         adapter.setImageList(imageList);
 
         imagesRecView.setAdapter(adapter);
-        imagesRecView.setLayoutManager(new LinearLayoutManager(this));
+        imagesRecView.setLayoutManager(linearLayoutManager);
 
         imagesRecView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -71,6 +84,30 @@ public class MainActivity extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.layout_options, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_layout) {
+            if (isGrid) {
+                isGrid = false;
+                imagesRecView.setLayoutManager(linearLayoutManager);
+                item.setIcon(R.drawable.ic_menu_grid);
+                item.setTitle("Show as Grid");
+            } else {
+                isGrid = true;
+                imagesRecView.setLayoutManager(staggeredGridLayoutManager);
+                item.setIcon(R.drawable.ic_menu_list);
+                item.setTitle("Show as List");
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void reloadImageList(View view) {
